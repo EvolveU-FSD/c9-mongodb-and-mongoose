@@ -9,35 +9,38 @@ import {
 export const drinksRouter = express.Router();
 
 // List all drinks
-drinksRouter.get('/', (request, response) => {
-  const drinks = listAllDrinks();
+drinksRouter.get('/', async (request, response) => {
+  const drinks = await listAllDrinks();
   response.send(drinks);
 });
 
 // Create a new drink
-drinksRouter.post('/', (request, response) => {
+drinksRouter.post('/', async (request, response) => {
   const drink = request.body;
 
-  createDrink(drink);
+  // TODO: Send back the drink that was created
+  await createDrink(drink);
 
   response.send();
 });
 
 // Update a drink
-drinksRouter.patch('/:id', (request, response) => {
-  const drinkId = Number(request.params.id);
+drinksRouter.patch('/:id', async (request, response) => {
+  const drinkId = request.params.id;
   const drink = request.body;
 
-  updateDrink(drinkId, drink);
+  // TODO: Send back the drink that was updated
+  await updateDrink(drinkId, drink);
 
   response.send();
 });
 
 // Delete a drink
-drinksRouter.delete('/:id', (request, response) => {
-  const drinkId = Number(request.params.id);
+drinksRouter.delete('/:id', async (request, response) => {
+  const drinkId = request.params.id;
 
-  deleteDrink(drinkId);
+  // TODO: Send back the drink that was deleted
+  await deleteDrink(drinkId);
 
   response.send();
 });

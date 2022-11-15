@@ -1,37 +1,27 @@
-// This is normally stored in a database
-let drinks = [
-  {
-    id: 1,
-    name: 'coke',
-  },
-  {
-    id: 2,
-    name: 'shirley temple',
-  },
-  {
-    id: 3,
-    name: 'manhattan',
-  },
-  {
-    id: 4,
-    name: 'ale',
-  },
-];
+import mongoose from 'mongoose';
 
-export function listAllDrinks() {
+const drinkSchema = new mongoose.Schema({
+  name: String,
+});
+
+const Drink = mongoose.model('Drink', drinkSchema);
+
+export async function listAllDrinks() {
+  const drinks = await Drink.find();
   return drinks;
 }
 
-export function createDrink(drink) {
-  drinks.push(drink);
+export async function createDrink(drink) {
+  // TODO: Return the drink that was created
+  await Drink.create(drink);
 }
 
-export function updateDrink(id, drink) {
-  const existingDrink = drinks.find((s) => s.id === id);
-
-  Object.assign(existingDrink, drink);
+export async function updateDrink(id, drink) {
+  // TODO: Return the drink that was updated
+  await Drink.findByIdAndUpdate(id, drink);
 }
 
-export function deleteDrink(id) {
-  drinks = drinks.filter((s) => s.id !== id);
+export async function deleteDrink(id) {
+  // TODO: Return the drink that was deleted
+  await Drink.findByIdAndDelete(id);
 }

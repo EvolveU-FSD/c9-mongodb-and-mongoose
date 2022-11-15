@@ -1,17 +1,32 @@
+import dotenv from 'dotenv';
 import express from 'express';
-import { sandwichesRouter } from './routes/sandwiches.js';
+import mongoose from 'mongoose';
 import { drinksRouter } from './routes/drinks.js';
+import { sandwichesRouter } from './routes/sandwiches.js';
 
-const app = express();
+dotenv.config();
 
-// This is normally stored in an environment variable or config file
-const port = 4000;
+async function main() {
+  await mongoose.connect(process.env.MONGODB_URI, {
+    dbName: process.env.MONGODB_DBNAME,
+    user: process.env.MONGODB_USER,
+    pass: process.env.MONGODB_PASSWORD,
+  });
 
-app.use(express.json());
+  console.log(`Connected to MongoDB database '${process.env.MONGODB_DBNAME}'`);
 
-app.use('/sandwiches', sandwichesRouter);
-app.use('/drinks', drinksRouter);
+  const app = express();
 
-app.listen(port, () => {
-  console.log(`Web server running on port ${port}`);
-});
+  const port = process.env.PORT;
+
+  app.use(express.json());
+
+  app.use('/sandwiches', sandwichesRouter);
+  app.use('/drinks', drinksRouter);
+
+  app.listen(port, () => {
+    console.log(`Web server running on port ${port}`);
+  });
+}
+
+main().catch((err) => console.error(err));
